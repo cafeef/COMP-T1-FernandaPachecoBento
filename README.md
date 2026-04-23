@@ -1,2 +1,2 @@
-# COMP-T1-FernandaPachecoBento
- 
+Esse trabalho foi desenvolvido por **Fernanda Pacheco Bento** com o RA **2664429** para a disciplina de Compiladores.
+Nesse conjunto de arquivos, estão presentes o código-fonte do projeto, um arquivo de teste para entrada no programa e o relatório.
