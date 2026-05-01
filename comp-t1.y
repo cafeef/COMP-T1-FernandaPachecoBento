@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "comp-t1.h"
+
+int yylex(void);
 %}
 
 %union {
@@ -39,7 +41,7 @@
 stmt: IF exp THEN list {$$ = newflow('I', $2, $4, NULL);}
     | IF exp THEN list ELSE list {$$ = newflow('I', $2, $4, $6);}
     | WHILE exp DO list {$$ = newflow('W', $2, $4, NULL);}
-    | FOR '(' exp ';' exp ';' exp ')' list  { $$ = newfor($3, $5, $7, $9); } /* NOVA REGRA: COMANDO FOR */
+    | FOR '(' exp ';' exp ';' exp ')' stmt  { $$ = newfor('R', $3, $5, $7, $9); } /* NOVA REGRA: COMANDO FOR */
     | exp
 ;
 
@@ -76,10 +78,12 @@ symlist: NAME {$$ = newsymlist($1, NULL);}
 
 calclist: /* palavra vazia */
     | calclist stmt EOL {
-        printf("= %4.4g\n> ", eval($2));
+        printf("= %4.4g\n", eval($2));
+        if(interactive) printf("> ");
         treefree($2);
         }
     | calclist LET NAME '(' symlist ')' '=' list EOL {
         dodef($3, $5, $8);
-        printf("Defined %s\n>", $3 ->name); }
-    | calclist error EOL {yyerrok; printf("> "); }
+        printf("Defined %s\n", $3 ->name);
+        if(interactive) printf("> "); }
+    | calclist error EOL {yyerrok; if(interactive) printf("> "); }

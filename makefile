@@ -6,7 +6,7 @@ all: $(NOME)
 $(NOME): $(NOME).l $(NOME).y
 	bison -d $(NOME).y
 	flex $(NOME).l
-	gcc -o $@ $(NOME).tab.c lex.yy.c -lfl
+	gcc -o $@ $(NOME).tab.c lex.yy.c $(NOME).c -lfl -lm
 
 clean:
 	rm -f $(NOME) $(NOME).tab.c $(NOME).tab.h lex.yy.c
