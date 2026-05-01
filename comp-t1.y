@@ -13,6 +13,7 @@ int yylex(void);
 %union {
     struct ast *a;
     double d;
+    char *str;
     struct symbol *s;
     struct symlist *sl;
     int fn;
@@ -20,19 +21,21 @@ int yylex(void);
 
 /* declaração de tokens */
 %token <d> NUMBER
+%token <str> STRING
 %token <s> NAME
 %token <fn> FUNC
 %token EOL
 
 %token IF THEN ELSE WHILE DO LET FOR AND OR
 
-%nonassoc <fn> CMP
 %right '='
-%left AND OR
+%left OR
+%left AND
+%nonassoc <fn> CMP
 %left '+' '-'
 %left '*' '/'
 
-%type <a> exp stmt list explist
+%type <a> exp stmt list explist inputstmt
 %type <sl> symlist
 
 %start calclist
@@ -65,6 +68,15 @@ exp: exp CMP exp {$$ = newcmp($2, $1, $3);}
     | NAME {$$ = newref($1);}
     | NAME '=' exp {$$ = newasgn($1, $3);}
     | FUNC '(' explist ')' {$$ = newfunc($1, $3);}
+    | FUNC '(' STRING ')' {
+        if($1 == B_print)
+            $$ = newstrprint($3);
+        else {
+            yyerror("string so pode ser usada com print");
+            free($3);
+            $$ = newnum(0);
+        }
+    }
     | NAME '(' explist ')' {$$ = newcall($1, $3);}
 ;
 
@@ -76,9 +88,16 @@ symlist: NAME {$$ = newsymlist($1, NULL);}
     | NAME ',' symlist {$$ = newsymlist($1, $3);}
 ;
 
+inputstmt: stmt
+    | stmt ';' {$$ = $1;}
+;
+
 calclist: /* palavra vazia */
-    | calclist stmt EOL {
-        printf("= %4.4g\n", eval($2));
+    | calclist EOL { if(interactive) printf("> "); }
+    | calclist inputstmt EOL {
+        double result = eval($2);
+        if(!($2->nodetype == 'P' || ($2->nodetype == 'F' && ((struct fncall *)$2)->functype == B_print)))
+            printf("= %4.4g\n", result);
         if(interactive) printf("> ");
         treefree($2);
         }

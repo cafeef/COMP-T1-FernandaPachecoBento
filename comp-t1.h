@@ -105,6 +105,11 @@ struct symasgn {
     struct ast *v; /* valor a ser atribuido */
 };
 
+struct strprint {
+    int nodetype; /* tipo P */
+    char *s;
+};
+
 /* construção de uma AST */
 struct ast *newast(int nodetype, struct ast *l, struct ast *r);
 struct ast *newcmp(int cmptype, struct ast *l, struct ast *r);
@@ -115,6 +120,7 @@ struct ast *newasgn(struct symbol *s, struct ast *v);
 struct ast *newnum(double d);
 struct ast *newflow(int nodetype, struct ast *cond, struct ast *tl, struct ast *tr);
 struct ast *newfor(int nodetype, struct ast *init, struct ast *cond, struct ast *inc, struct ast *body);
+struct ast *newstrprint(char *s);
 
 /* definição de uma função */
 void dodef(struct symbol *name, struct symlist *syms, struct ast *stmts);

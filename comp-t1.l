@@ -5,8 +5,12 @@
 /* reconhecimento de tokens */
 %option noyywrap nodefault yylineno
 %{
+#include <stdlib.h>
+#include <string.h>
 #include "comp-t1.h"
 #include "comp-t1.tab.h"
+
+static int eof_sent = 0;
 %}
 
 /* expoente float */
@@ -52,12 +56,30 @@ EXP ([Ee][-+]?[0-9]+)
     /* declaração de name e number */
 [a-zA-Z][a-zA-Z0-9]* {yylval.s = lookup(yytext); return NAME;}
 [0-9]+"."[0-9]*{EXP}? {yylval.d = atof(yytext); return NUMBER;}
+[0-9]+{EXP}? {yylval.d = atof(yytext); return NUMBER;}
+\"[^"\n]*\" {
+    yylval.str = strdup(yytext + 1);
+    yylval.str[yyleng - 2] = '\0';
+    return STRING;
+}
+\'[^'\n]*\' {
+    yylval.str = strdup(yytext + 1);
+    yylval.str[yyleng - 2] = '\0';
+    return STRING;
+}
 
     /* lexemas ignorados */
 "//".*
 [ \t]
 \\\n {if(interactive) printf("c> ");}
 \n {return EOL;}
+<<EOF>> {
+    if(!eof_sent) {
+        eof_sent = 1;
+        return EOL;
+    }
+    yyterminate();
+}
 
 . {yyerror("Caracter desconhecido %c\n", *yytext);}
 %%

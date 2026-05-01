@@ -178,6 +178,19 @@ struct ast *newfor(int nodetype, struct ast *init, struct ast *cond, struct ast 
     return (struct ast *)a;
 }
 
+struct ast *newstrprint(char *s)
+{
+    struct strprint *a = malloc(sizeof(struct strprint));
+
+    if(!a) {
+        yyerror("sem espaco");
+        exit(0);
+    }
+    a->nodetype = 'P';
+    a->s = s;
+    return (struct ast *)a;
+}
+
 /* libera uma arvore de AST */
 
 void treefree(struct ast *a)
@@ -201,6 +214,10 @@ void treefree(struct ast *a)
 
     /* sem subarvore */
     case 'K': case 'N':
+        break;
+
+    case 'P':
+        free(((struct strprint *)a)->s);
         break;
 
     case '=':
@@ -272,6 +289,12 @@ double eval(struct ast *a)
 
     /* referencia de nome */
     case 'N': v = ((struct symref *)a)->s->value; break;
+
+    /* print de string */
+    case 'P':
+        printf("%s\n", ((struct strprint *)a)->s);
+        v = 0.0;
+        break;
 
     /* atribuicao */
     case '=': v = ((struct symasgn *)a)->s->value = eval(((struct symasgn *)a)->v); break;

@@ -55,19 +55,20 @@ extern int yydebug;
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
     NUMBER = 258,                  /* NUMBER  */
-    NAME = 259,                    /* NAME  */
-    FUNC = 260,                    /* FUNC  */
-    EOL = 261,                     /* EOL  */
-    IF = 262,                      /* IF  */
-    THEN = 263,                    /* THEN  */
-    ELSE = 264,                    /* ELSE  */
-    WHILE = 265,                   /* WHILE  */
-    DO = 266,                      /* DO  */
-    LET = 267,                     /* LET  */
-    FOR = 268,                     /* FOR  */
-    AND = 269,                     /* AND  */
-    OR = 270,                      /* OR  */
-    CMP = 271                      /* CMP  */
+    STRING = 259,                  /* STRING  */
+    NAME = 260,                    /* NAME  */
+    FUNC = 261,                    /* FUNC  */
+    EOL = 262,                     /* EOL  */
+    IF = 263,                      /* IF  */
+    THEN = 264,                    /* THEN  */
+    ELSE = 265,                    /* ELSE  */
+    WHILE = 266,                   /* WHILE  */
+    DO = 267,                      /* DO  */
+    LET = 268,                     /* LET  */
+    FOR = 269,                     /* FOR  */
+    AND = 270,                     /* AND  */
+    OR = 271,                      /* OR  */
+    CMP = 272                      /* CMP  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -80,11 +81,12 @@ union YYSTYPE
 
     struct ast *a;
     double d;
+    char *str;
     struct symbol *s;
     struct symlist *sl;
     int fn;
 
-#line 88 "comp-t1.tab.h"
+#line 90 "comp-t1.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
