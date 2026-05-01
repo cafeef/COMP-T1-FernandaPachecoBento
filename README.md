@@ -67,4 +67,3 @@ Para remover os arquivos gerados pela compilação, execute:
 ```bash
 make clean
 ```
->>>>>>> Stashed changes
