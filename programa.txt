@@ -35,4 +35,29 @@ contador = 0;
 while contador < 3 or contador == 3 do contador = contador + 1;
 print(contador);
 
-print("Fim do programa");
+print("Fim da parte correta do programa");
+
+print("INICIO DO TESTE DE ERROS DE SINTAXE PARA O PARSER");
+print("Os comandos abaixo possuem erros intencionais.");
+
+print("x = 2 + ;")
+print("Erro 1: expressao incompleta apos operador +");
+x = 2 + ;
+
+print("if x > 0 print(x);")
+print("Erro 2: IF sem a palavra reservada then");
+if x > 0 print(x);
+
+print("while x < 5 x = x + 1;")
+print("Erro 3: WHILE sem a palavra reservada do");
+while x < 5 x = x + 1;
+
+print("for(i = 0; i < 3 i = i + 1) print(i);")
+print("Erro 4: FOR com ponto e virgula faltando no cabecalho");
+for(i = 0; i < 3 i = i + 1) print(i);
+
+print("print(x;")
+print("Erro 5: chamada de funcao sem fechar parenteses");
+print(x;
+
+print("FIM DO TESTE DE ERROS DE SINTAXE PARA O PARSER");
