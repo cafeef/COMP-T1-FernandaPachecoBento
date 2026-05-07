@@ -35,6 +35,10 @@ contador = 0;
 while contador < 3 or contador == 3 do contador = contador + 1;
 print(contador);
 
+print("Teste de definicao de funcao com LET:");
+let dobro(n) = n * 2;
+print(dobro(7));
+
 print("Fim da parte correta do programa");
 
 print("INICIO DO TESTE DE ERROS DE SINTAXE PARA O PARSER");
